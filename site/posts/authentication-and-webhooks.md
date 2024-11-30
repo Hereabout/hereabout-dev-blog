@@ -25,7 +25,7 @@ Now, it's possible I might be worrying about nothing here. Perhaps if I have 25,
 
 ### The open source alternative
 
-My natural reaction to having been burnt by enterprise authentication options was to head straight for the open source alternative. Afterall, why risk paying for anything but the cost of hosting the authentication platform?  So, I started investigating [Keycloak](https://www.keycloak.org/).
+My natural reaction to having been burnt by enterprise authentication options was to head straight for the open source alternative. After all, why risk paying for anything but the cost of hosting the authentication platform?  So, I started investigating [Keycloak](https://www.keycloak.org/).
 
 I enthusiastically fired up `docker compose` to get an instance running and start figuring out how to make use of it.
 
@@ -37,7 +37,7 @@ After sinking a couple of days into Keycloak I realised I wasn't making enough p
 
 ### What now?
 
-Back I went to the research stage. I started seriously looking into [Supertokens](https://supertokens.com/). On their pricing page, they make a big selling point of the fact that there is no 10x increase in price when you cross some cliff-edge in user count. There is also a self-hosted open source option which would work out to be very reasonably priced even if Hereabout ends up being quite succesful.
+Back I went to the research stage. I started seriously looking into [Supertokens](https://supertokens.com/). On their pricing page, they make a big selling point of the fact that there is no 10x increase in price when you cross some cliff-edge in user count. There is also a self-hosted open source option which would work out to be very reasonably priced even if Hereabout ends up being quite successful.
 
 Unfortunately, Supertokens offers backend integrations with NodeJS, Go and Python. Not at all helpful for my Haskell API. I'm sure it's possible to get Supertokens working with my Haskell backend by spinning up an extra service in one of those languages but my appetite for that much complexity is very low so, despite the appeal of the self-hosted offering, Supertokens was also out.
 
@@ -211,6 +211,6 @@ swhTests = testGroup "Standard Webhook tests"
 
 None of this was an entirely smooth experience, the pricing model of authentication providers is both complex and intimidating to smaller projects. Minimal or non-existent Haskell library support for even the most popular providers make building this kind of thing even more difficult.
 
-Auth providers like Supertokens that have a very small set of supported languges (they don't even provide SDKs for Java or .NET) might do well to put a lot of effort into documentation so that the community can provide such SDKs quickly and easily, backed by solid reference material.
+Auth providers like Supertokens that have a very small set of supported languages (they don't even provide SDKs for Java or .NET) might do well to put a lot of effort into documentation so that the community can provide such SDKs quickly and easily, backed by solid reference material.
 
 In the future, I might go back and release a library on Hackage that provides the above webhook support with a more polished API but, until then, you can consider the above code available under standard 3-Clause BSD licence terms in case it's helpful to anyone building Haskell projects that require syncing data from Clerk.
