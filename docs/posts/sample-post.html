@@ -2,7 +2,7 @@
 <html lang="en">
 <head profile="http://www.w3.org/2005/10/profile">
     <meta charset="UTF-8">
-    <meta name="description" content="My Slick Site">
+    <meta name="description" content="Hereabout Dev Blog">
     <meta name="author" content="Me">
     <meta name=viewport content="width=device-width, initial-scale=1">
     <meta name="twitter:card" content="summary_large_image">
@@ -12,69 +12,39 @@
     <meta name="twitter:description" content="My first blog post using slick">
     <meta name="twitter:image" content="https://example.com/images/code.jpg">
     <title>Sample Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"/>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/syntax.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <a id="beacon" href="/">
-                <div id="home-text"> HOME </div>
-            </a>
-        </nav>
     
-        <div class="right-sidebar">
-            <a class="ext-link" href="https://github.com/myslickgithubuser">
-            <img src="/images/github-logo.png" alt="Github Profile"/>
-        </a>
-
-            <a class="ext-link" href="https://twitter.com/myslickhandle">
-            <img src="/images/twitter-logo.png" alt="Twitter Profile"/>
-        </a>
-    <div id="theme-button">DAY</div>
+    <nav class="navbar is-flex is-vcentered is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand ">
+            <a class="navbar-item" href="https://example.com">
+                <img src="/images/hereabout.svg" height="32" width="200"/>
+            </a>
+            <h2 class="subtitle navbar-item">
+                Dev Blog
+            </h2>
         </div>
-    </header>
+    </nav>
+    
 
-<div id="page">
-    <div class="wrapper">
-        <div class="masthead">
-            <span class="title">
+    <div class="section">
+        <div id="page" class="container is-fullheight">
+            <h1 class="title">
                 Sample Post
-            </span>
-            <br>
+            </h1>
+            <h2 class="subtitle">
+                by Me
+            </h2>
 
-            <img class="post-image" src="/images/code.jpg">
-            <br>
-            <span class="byline">by Me</span>
-            <br>
-            <span class="date">Jan 1, 2019</span>
-            <br>
-            <div class="metadata">
-            </div>
-            <div class="tags">
-              <span class="tag slick">slick</span>
-              <span class="tag site">site</span>
+            <div class="content">
+                <p>Welcome to your first blog post!</p>
             </div>
         </div>
     </div>
-    <article class="post">
-        <p>Welcome to your first blog post!</p>
-
-        <br>
-        <br>
-
-        <!--Share buttons-->
-        <div class="social-buttons">
-            <a href="https://twitter.com/share" class="twitter-share-button"
-                                                data-url="https://example.com" data-text="Check out: Sample Post - " data-via="myslickhandle">Tweet</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-            <a href="https://twitter.com/myslickhandle" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @myslickhandle</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-            <div class="fb-like" data-href="" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
-        </div>
-</article>
-
-</div>
 
 <footer>
     Built with Haskell using <a href="https://github.com/ChrisPenner/slick">slick</a> ❤️

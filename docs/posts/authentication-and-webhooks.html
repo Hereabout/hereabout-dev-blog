@@ -1,20 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <title>Hereabout Dev Blog</title>
-    <link href="https://example.com/atom.xml" rel="self" type="application/rss+xml" />
-  <updated>2024-11-30T03:19:05Z</updated>
-  <author>
-      <name>Me</name>
-  </author>
-  <id>https://example.com/</id>
+<!DOCTYPE html>
+<html lang="en">
+<head profile="http://www.w3.org/2005/10/profile">
+    <meta charset="UTF-8">
+    <meta name="description" content="Hereabout Dev Blog">
+    <meta name="author" content="Me">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@myslickhandle">
+<meta name="twitter:creator" content="@myslickhandle">
+<meta name="twitter:title" content="Authentication and Standard Webhooks">
+    <meta name="twitter:description" content="My first blog post using slick">
+    <meta name="twitter:image" content="https://example.com/images/code.jpg">
+    <title>Authentication and Standard Webhooks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"/>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+<body>
+    
+    <nav class="navbar is-flex is-vcentered is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand ">
+            <a class="navbar-item" href="https://example.com">
+                <img src="/images/hereabout.svg" height="32" width="200"/>
+            </a>
+            <h2 class="subtitle navbar-item">
+                Dev Blog
+            </h2>
+        </div>
+    </nav>
+    
 
-  <entry>
-      <title>Authentication and Standard Webhooks</title>
-      <link href="https://example.composts/authentication-and-webhooks.html"/>
-      <id>https://example.composts/authentication-and-webhooks.html</id>
-      <updated>2024-11-29T00:00:00Z</updated>
-      <summary>My first blog post using slick</summary>
-      <content type="html"><![CDATA[<p>When working on a platform that you intend to contain social
+    <div class="section">
+        <div id="page" class="container is-fullheight">
+            <h1 class="title">
+                Authentication and Standard Webhooks
+            </h1>
+            <h2 class="subtitle">
+                by Me
+            </h2>
+
+            <div class="content">
+                <p>When working on a platform that you intend to contain social
 components, you are very quickly going to have to consider how to
 support various types of user interaction: comments, likes, reactions,
 etc. Before you can even start on those interesting problems, you have
@@ -274,6 +301,17 @@ material.</p>
 provides the above webhook support with a more polished API but, until
 then, you can consider the above code available under standard 3-Clause
 BSD licence terms in case it's helpful to anyone building Haskell
-projects that require syncing data from their auth provider.</p>]]></content>
-  </entry>
-</feed>
+projects that require syncing data from their auth provider.</p>
+            </div>
+        </div>
+    </div>
+
+<footer>
+    Built with Haskell using <a href="https://github.com/ChrisPenner/slick">slick</a> ❤️
+</footer>
+
+<link href='https://fonts.googleapis.com/css?family=Quicksand:300,400' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<script src="/js/main.js"></script>
+</body>
+</html>

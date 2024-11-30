@@ -48,6 +48,7 @@
                   final.haskellPackages.haskell-language-server
                   final.dhall
                   final.dhall-lsp-server
+                  final.nodePackages.serve
                 ];
               };
             })

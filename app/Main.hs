@@ -31,7 +31,7 @@ siteMeta :: SiteMeta
 siteMeta =
     SiteMeta { siteAuthor = "Me"
              , baseUrl = "https://example.com"
-             , siteTitle = "My Slick Site"
+             , siteTitle = "Hereabout Dev Blog"
              , twitterHandle = Just "myslickhandle"
              , githubUser = Just "myslickgithubuser"
              }
