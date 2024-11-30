@@ -1,59 +1,63 @@
 ---
 title: "Authentication and Standard Webhooks"
-author: Me
+author: Phil Curzon
 date: Nov 29, 2024
 tags: []
 description: My first blog post using slick
-image: code.jpg
+image: haskell-auth.webp
 ---
 
-When working on a platform that you intend to contain social components, you are very quickly going to have to consider how to support various types of user interaction: comments, likes, reactions, etc. Before you can even start on those interesting problems, you have to tackle the elephant in the room: Authentication.
+When working on a platform that you intend to contain social components, you are very quickly going to have to consider how to support various types of user interaction: comments, likes, reactions, etc. There are lots of interesting questions to answer in the space of social interaction: What sort of content rating systems promote the right user behaviour? How do you encourage thoughtful, high quality content? How do you prevent harmful content or abuse?
+
+Those are all fascinating questions to consider and certainly ones that I'd like to come back to but before you can even think about prototyping anything in this space, you have to consider the elephant in the room and that is the problem of authentication.
 
 You need some mechanism by which users can log in to your site and authenticate against your API so that you can identify who they are and what they're authorised to do.
 
-There are dozens of potential authentication service providers who you can go to to get something off the shelf: Auth0, Clerk, Cognito, Firebase Auth, SuperTokens, etc. Throughout my career, I've worked at many companies that integrated with several of these suppliers but they were always a well established fixture of the technology stack: something that required learning particular APIs or particular support contacts rather than an evaluation of their individual merits.
+There are dozens of potential authentication service providers who you can go to to get something off the shelf: Auth0, Clerk, Cognito, Firebase Auth, SuperTokens, etc. Throughout my career, I've worked at many companies that integrated with many of these suppliers but they were always a well established fixture of the technology stack: something that required learning particular APIs or particular support contacts rather than an evaluation of their individual merits and their pricing structures.
 
 ### Deciding where to start
 
-Back in 2019, I did some experiments with a Purescript/Halogen UI integrating with Auth0. Since I decided to stick with Purescript/Halogen for the Hereabout UI, this seemed like the obvious place to start. Rather than putting myself to any trouble doing some difficult thinking, I could simply copy and paste some code (with a bit of accounting for the inevitable library version updates since 2019) and have a lovely time. What wasn't there to love?
+Back in 2019, I did some experiments with a Purescript/Halogen UI integrating with Auth0. Since I decided to stick with Purescript/Halogen for the UI of [Hereabout](https://hereabout.uk), this seemed like the obvious place to start. Rather than putting myself to any trouble doing some difficult thinking, I could simply copy and paste some code (with a bit of accounting for the inevitable library version updates since 2019) and have a lovely time. What wasn't there to love?
 
 Well. It turns out that Auth0 and several other authentication providers offer a free plan up to X number of monthly active users (MAUs). This would be absolutely fine if X+1 MAUs cost a nominal fee. Unfortunately, that is not _always_ the case. In the worst possible case, adding 1 MAU might take you from spending $0/month to $1000+/month.
 
-Now, it's possible I might be worrying about nothing. Perhaps if I have 25,0001 MAUs, it's a sign of success and $1000+/month isn't a big deal but Hereabout is not a VC-backed project, it's a hobby project designed to support local communities, it's at a very early proof of concept stage and I currently don't have any concrete plans to monetise it. Spending a nominal few dollars / month on hosting the backend and postgres database is one thing but worrying about a looming threat of significant monthly fees is not very appealing, especially as a new Dad. So, if for no other reason than my psychological health, cliff edges in billing are out.
+Now, it's possible I might be worrying about nothing here. Perhaps if I have 25,0001 MAUs, it's a sign of success and $1000+/month isn't a big deal but Hereabout is not a VC-backed project, it's a hobby project designed to support local communities, it's at a very early proof of concept stage and I currently don't have any concrete plans to monetise it. Spending a nominal few dollars / month on hosting the backend and postgres database is one thing but worrying about a looming threat of significant monthly fees is not very appealing, especially as a new Dad. So, if for no other reason than my psychological health, cliff edges in billing are out.
 
 ### The open source alternative
 
 My natural reaction to having been burnt by enterprise authentication options was to head straight for the open source alternative. Afterall, why risk paying for anything but the cost of hosting the authentication platform?  So, I started investigating [Keycloak](https://www.keycloak.org/).
 
-Keycloak is fabulous, it has every feature under the sun and you don't have to pay for any of it.
+I enthusiastically fired up `docker compose` to get an instance running and start figuring out how to make use of it.
 
-So, I enthusiastically fired up `docker compose` to get an instance running and start figuring out how to make use of it.
+Now, Keycloak is fabulous, it has every feature under the sun and you don't have to pay for any of it you just have to work through the various modules and rigorously set them up.
 
-I managed to make some progress with my local keycloak configuration but realised there were a lot of subtleties, particularly differences in configuration required for running Keycloak in a development setting and a production setting that could create security vulnerabilities if not handled correctly.
+I managed to make some progress with my local keycloak configuration but realised there were a lot of subtleties, particularly differences in configuration required for running Keycloak in a development setting vs a production setting. Obviously, with something as sensitive as an auth service, this can create some pretty nasty security vulnerabilities if not done correctly.
 
-After sinking a couple of days into Keycloak I realised I wasn't making enough progress. My objective here was never to learn the ins and outs of configuring an authentication provider myself, it was to get a working login system so that I could develop other features I actually cared about.  So, as fascinating as it was, Keycloak was out.
+After sinking a couple of days into Keycloak I realised I wasn't making enough progress. My objective here was never to learn the ins and outs of configuring an authentication provider myself, it was to get a working login system so that I could develop other features I actually cared about.  So, as fascinating as it was, I decided Keycloak was out.
 
 ### What now?
 
 Back I went to the research stage. I started seriously looking into [Supertokens](https://supertokens.com/). On their pricing page, they make a big selling point of the fact that there is no 10x increase in price when you cross some cliff-edge in user count. There is also a self-hosted open source option which would work out to be very reasonably priced even if Hereabout ends up being quite succesful.
 
-Unfortunately, Supertokens offers backend integrations with NodeJS, Go and Python. Not at all helpful for my Haskell API. I'm sure it's possible to get Supertokens working with my Haskell backend by spinning up an extra service in one of those languages but my appetite for that much complexity is very low so that option was also out.
+Unfortunately, Supertokens offers backend integrations with NodeJS, Go and Python. Not at all helpful for my Haskell API. I'm sure it's possible to get Supertokens working with my Haskell backend by spinning up an extra service in one of those languages but my appetite for that much complexity is very low so, despite the appeal of the self-hosted offering, Supertokens was also out.
 
 ### A solution at last
 
-Finally, and with much suspicion by this point, I landed on [Clerk](https://clerk.com/). Clerk also doesn't have a cliff-edge in billing and but it includes fairly straightforward instructions for integrating with generic JWT libraries on the backend and a raw javascript library on the client-side that I can readily wrap with Purescript.
+Finally, and with much suspicion by this point, I landed on [Clerk](https://clerk.com/). Clerk also doesn't have a cliff-edge in billing and it includes fairly straightforward instructions for integrating with generic JWT libraries on the backend and it has a raw javascript library on the client-side that I can readily wrap with Purescript.
 
-I also realised, at this point, that I was going to need easy access to user data so that I could facilitate building those social features that I actually cared about rather than outsourcing all my user data opaquely and doing a bunch of gymnastics to get it back.
+Having now tackled the first problem I started worrying about another. If I'm outsourcing user login to a third party, how on earth do I get easy access to user data so that I can facilitate building the social features that I actually care about?
 
 ### The webhook reality check
 
-Rather than polling for user info and introducing latency at every stage of my app, I decided to use Clerk's webhooks so that user information would be constantly sent to my Haskell API and update my postgres database with the latest information.
+When working on the auth stack at a well established company, there are all kinds of options to get user data: user microservices, caches, kafka, etc. These are all pretty high in complexity budget and I want to keep my stack as simple as possible for as long as possible.
 
-Clerk uses [Svix](https://svix.com/) to send these webhooks. Svix have in turn created a standard called [Standard Webhooks](https://www.standardwebhooks.com/).
+The easiest option is probably just polling for user info when required but that introduces extra latency at every stage of my app. I also have to consider there are probably going to be rate limits on the auth service API (I checked: there are) that I'm going to fall foul of at only a very tiny number of regularly active users.
 
-Obviously, there is a digital signing process to these webhooks so that we can ensure that the webhooks are coming from a trusted source.  Basically, they send send three HTTP headers `svix-id`, `svix-timestamp` and `svix-signature`.
+In the end, I decided to use Clerk's webhooks so that user information would be constantly sent to my Haskell API and update my postgres database with the latest information. This would obviously be particularly lovely attached to Kafka, publishing some user updated topic to my app but I simply don't need that at this stage.
 
-You can reproduce `svix-signature` with the `SHA256 HMAC` of `${svix_id}.${svix_timestamp}.${http_request_body}` and the shared `HMAC` secret.
+It turns out that Clerk uses [Svix](https://svix.com/) to send its webhooks. Svix have in turn created a standard called [Standard Webhooks](https://www.standardwebhooks.com/).
+
+Basically, there is a digital signing process to these webhooks so that we can ensure that the webhooks are coming from a trusted source.  They send send three HTTP headers `svix-id`, `svix-timestamp` and `svix-signature`.  You can reproduce `svix-signature` with the `SHA256 HMAC` of `${svix_id}.${svix_timestamp}.${http_request_body}` and your shared `HMAC` secret.
 
 Libraries are provided for the implementation but, naturally, there is nothing for Haskell. Before tearing my hair out and going back to square one again, I realise there is a [guide](https://docs.svix.com/receiving/verifying-payloads/how-manual) for verifying the payloads manually.
 
@@ -61,7 +65,7 @@ Libraries are provided for the implementation but, naturally, there is nothing f
 
 At this point, the job is just to reproduce the example javascript in Haskell. Thankfully, this is reasonably straightforward. There is a [simulation tool](https://www.standardwebhooks.com/simulate) to check your payloads which can be easily translated into tests.
 
-Just watch out for the fact that the secrets are provided in the form `whsec_FNjuUR17qqxt6GtORAHn6kLa`. You need to chop out the `whsec_` prefix and `base64` decode the suffix before feeding it into the function below.
+Just watch out for the fact that the secrets are provided in the form `whsec_[SECRET]`, e.g. `whsec_FNjuUR17qqxt6GtORAHn6kLa`. You need to chop out the `whsec_` prefix and `base64` decode the suffix before feeding it into the function below.
 
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
@@ -205,8 +209,8 @@ swhTests = testGroup "Standard Webhook tests"
 
 ### Concluding thoughts
 
-None of this process was an entirely smooth experience, the pricing model of authentication providers is both complex and intimidating to smaller projects. Minimal or non-existent Haskell library support for even the most popular providers make building this kind of thing even more difficult.
+None of this was an entirely smooth experience, the pricing model of authentication providers is both complex and intimidating to smaller projects. Minimal or non-existent Haskell library support for even the most popular providers make building this kind of thing even more difficult.
 
 Auth providers like Supertokens that have a very small set of supported languges (they don't even provide SDKs for Java or .NET) might do well to put a lot of effort into documentation so that the community can provide such SDKs quickly and easily, backed by solid reference material.
 
-In the future, I might go back and release a library on Hackage that provides the above webhook support with a more polished API but, until then, you can consider the above code available under standard 3-Clause BSD licence terms in case it's helpful to anyone building Haskell projects that require syncing data from their auth provider.
+In the future, I might go back and release a library on Hackage that provides the above webhook support with a more polished API but, until then, you can consider the above code available under standard 3-Clause BSD licence terms in case it's helpful to anyone building Haskell projects that require syncing data from Clerk.
