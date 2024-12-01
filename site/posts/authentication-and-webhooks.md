@@ -3,7 +3,7 @@ title: "Authentication and Standard Webhooks"
 author: Phil Curzon
 date: Nov 29, 2024
 tags: []
-description: My first blog post using slick
+description: The Hereabout journey of auth provider exploration and subsequent webhook verification implementation.
 image: haskell-auth.webp
 ---
 
