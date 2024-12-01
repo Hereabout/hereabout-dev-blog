@@ -7,8 +7,9 @@
     <meta name=viewport content="width=device-width, initial-scale=1">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Authentication and Standard Webhooks">
-    <meta name="twitter:description" content="The Hereabout journey of auth provider exploration and subsequent
-webhook verification implementation.">
+    <meta name="twitter:description" content="A journey of exploring authentication options for Hereabout and the
+Haskell implementation of verification of standard webhooks to
+facilitate user sync between Clerk and Hereabout&#39;s Postgres database.">
     <meta name="twitter:image" content="https://hereabout.dev/images/haskell-auth.webp">
     <title>Authentication and Standard Webhooks</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -83,8 +84,8 @@ contacts rather than an evaluation of their individual merits and their
 pricing structures.</p>
 <h3 id="deciding-where-to-start">Deciding where to start</h3>
 <p>Back in 2019, I did some experiments with a Purescript/Halogen UI
-integrating with <a href="Auth0">https://auth0.com/</a>. Since I decided
-to stick with Purescript/Halogen for the UI of <a
+integrating with <a href="https://auth0.com/">Auth0</a>. Since I had
+already decided to stick with Purescript/Halogen for the UI of <a
 href="https://hereabout.uk">Hereabout</a>, this seemed like the obvious
 place to start. Rather than putting myself to any trouble doing some
 difficult thinking, I could simply copy and paste some code (with a bit
@@ -104,7 +105,7 @@ concept stage and I currently don't have any concrete plans to monetise
 it. Spending a nominal few dollars / month on hosting the backend and
 postgres database is one thing but worrying about a looming threat of
 significant monthly fees is not very appealing, especially as a new Dad.
-So, if for no other reason than my psychological health, cliff edges in
+So, if for no other reason than my psychological health, cliff-edges in
 billing are out.</p>
 <h3 id="the-open-source-alternative">The open source alternative</h3>
 <p>My natural reaction to having been burnt by enterprise authentication
@@ -133,9 +134,15 @@ out.</p>
 <p>Back I went to the research stage. I started seriously looking into
 <a href="https://supertokens.com/">Supertokens</a>. On their pricing
 page, they make a big selling point of the fact that there is no 10x
-increase in price when you cross some cliff-edge in user count. There is
-also a self-hosted open source option which would work out to be very
-reasonably priced even if Hereabout ends up being quite successful.</p>
+increase in price when you cross some cliff-edge in user count.</p>
+<p>It's worth noting that Supertokens actually has a less generous free
+tier than Auth0 but you pay per user above the free tier threshold
+rather than paying per user on all of your users once you've reached the
+free tier limit. That means you're never in the position of one new user
+costing you thousands.</p>
+<p>There is also a self-hosted open source option which would work out
+to be very reasonably priced even if Hereabout were to end up being
+quite successful.</p>
 <p>Unfortunately, Supertokens offers backend integrations with NodeJS,
 Go and Python. Not at all helpful for my Haskell API. I'm sure it's
 possible to get Supertokens working with my Haskell backend by spinning
@@ -149,7 +156,12 @@ cliff-edge in billing and it includes fairly straightforward
 instructions for integrating with generic JWT libraries on the backend
 and it has a raw javascript library on the client-side that I can
 readily wrap with Purescript.</p>
-<p>Having now tackled the first problem I started worrying about
+<p>Helpfully, Clerk also comes with a bunch of pure javascript
+components for account management, user login and such that can be
+rolled into a Purescript/Halogen UI very easily and that's another
+convenient time saver when it comes to getting something up and running
+quickly.</p>
+<p>So, having now tackled the first problem I started worrying about
 another. If I'm outsourcing user login to a third party, how on earth do
 I get easy access to user data so that I can facilitate building the
 social features that I actually care about?</p>

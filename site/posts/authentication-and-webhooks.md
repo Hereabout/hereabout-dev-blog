@@ -1,9 +1,9 @@
 ---
 title: "Authentication and Standard Webhooks"
 author: Phil Curzon
-date: Nov 29, 2024
-tags: []
-description: The Hereabout journey of auth provider exploration and subsequent webhook verification implementation.
+date: Dec 1, 2024
+tags: [Haskell, JWT, Authentication, Standard Webhooks]
+description: A journey of exploring authentication options for Hereabout and the Haskell implementation of verification of standard webhooks to facilitate user sync between Clerk and Hereabout's Postgres database.
 image: haskell-auth.webp
 ---
 
@@ -19,11 +19,11 @@ There are dozens of potential authentication service providers who you can go to
 
 ### Deciding where to start
 
-Back in 2019, I did some experiments with a Purescript/Halogen UI integrating with [https://auth0.com/](Auth0). Since I decided to stick with Purescript/Halogen for the UI of [Hereabout](https://hereabout.uk), this seemed like the obvious place to start. Rather than putting myself to any trouble doing some difficult thinking, I could simply copy and paste some code (with a bit of accounting for the inevitable library version updates since 2019) and have a lovely time. What wasn't there to love?
+Back in 2019, I did some experiments with a Purescript/Halogen UI integrating with [Auth0](https://auth0.com/). Since I had already decided to stick with Purescript/Halogen for the UI of [Hereabout](https://hereabout.uk), this seemed like the obvious place to start. Rather than putting myself to any trouble doing some difficult thinking, I could simply copy and paste some code (with a bit of accounting for the inevitable library version updates since 2019) and have a lovely time. What wasn't there to love?
 
 Well. It turns out that Auth0 and several other authentication providers offer a free plan up to X number of monthly active users (MAUs). This would be absolutely fine if X+1 MAUs cost a nominal fee. Unfortunately, that is not _always_ the case. In the worst possible case, adding 1 MAU might take you from spending $0/month to $1000+/month.
 
-Now, it's possible I might be worrying about nothing here. Perhaps if I have 25,0001 MAUs, it's a sign of success and $1000+/month isn't a big deal but Hereabout is not a VC-backed project, it's a hobby project designed to support local communities, it's at a very early proof of concept stage and I currently don't have any concrete plans to monetise it. Spending a nominal few dollars / month on hosting the backend and postgres database is one thing but worrying about a looming threat of significant monthly fees is not very appealing, especially as a new Dad. So, if for no other reason than my psychological health, cliff edges in billing are out.
+Now, it's possible I might be worrying about nothing here. Perhaps if I have 25,0001 MAUs, it's a sign of success and $1000+/month isn't a big deal but Hereabout is not a VC-backed project, it's a hobby project designed to support local communities, it's at a very early proof of concept stage and I currently don't have any concrete plans to monetise it. Spending a nominal few dollars / month on hosting the backend and postgres database is one thing but worrying about a looming threat of significant monthly fees is not very appealing, especially as a new Dad. So, if for no other reason than my psychological health, cliff-edges in billing are out.
 
 ### The open source alternative
 
@@ -39,7 +39,11 @@ After sinking a couple of days into Keycloak I realised I wasn't making enough p
 
 ### What now?
 
-Back I went to the research stage. I started seriously looking into [Supertokens](https://supertokens.com/). On their pricing page, they make a big selling point of the fact that there is no 10x increase in price when you cross some cliff-edge in user count. There is also a self-hosted open source option which would work out to be very reasonably priced even if Hereabout ends up being quite successful.
+Back I went to the research stage. I started seriously looking into [Supertokens](https://supertokens.com/). On their pricing page, they make a big selling point of the fact that there is no 10x increase in price when you cross some cliff-edge in user count. 
+
+It's worth noting that Supertokens actually has a less generous free tier than Auth0 but you pay per user above the free tier threshold rather than paying per user on all of your users once you've reached the free tier limit. That means you're never in the position of one new user costing you thousands.
+
+There is also a self-hosted open source option which would work out to be very reasonably priced even if Hereabout were to end up being quite successful.
 
 Unfortunately, Supertokens offers backend integrations with NodeJS, Go and Python. Not at all helpful for my Haskell API. I'm sure it's possible to get Supertokens working with my Haskell backend by spinning up an extra service in one of those languages but my appetite for that much complexity is very low so, despite the appeal of the self-hosted offering, Supertokens was also out.
 
@@ -47,7 +51,9 @@ Unfortunately, Supertokens offers backend integrations with NodeJS, Go and Pytho
 
 Finally, and with much suspicion by this point, I landed on [Clerk](https://clerk.com/). Clerk also doesn't have a cliff-edge in billing and it includes fairly straightforward instructions for integrating with generic JWT libraries on the backend and it has a raw javascript library on the client-side that I can readily wrap with Purescript.
 
-Having now tackled the first problem I started worrying about another. If I'm outsourcing user login to a third party, how on earth do I get easy access to user data so that I can facilitate building the social features that I actually care about?
+Helpfully, Clerk also comes with a bunch of pure javascript components for account management, user login and such that can be rolled into a Purescript/Halogen UI very easily and that's another convenient time saver when it comes to getting something up and running quickly.
+
+So, having now tackled the first problem I started worrying about another. If I'm outsourcing user login to a third party, how on earth do I get easy access to user data so that I can facilitate building the social features that I actually care about?
 
 ### The webhook reality check
 

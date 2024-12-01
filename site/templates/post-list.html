@@ -1,7 +1,24 @@
-<ul>
-    {{#posts}}
-        <li>
-            <a href="{{url}}">{{title}} <span class="date">{{date}}</span> </a>
-        </li>
-    {{/posts}}
-</ul>
+{{#posts}}
+<article class="media">
+    <figure class="media-left">
+        <p class="image is-128x128">
+          <img src="/images/{{image}}" />
+        </p>
+    </figure>
+    <div class="media-content">
+        <div class="content">
+          <p>
+            <strong><a href="{{url}}">{{title}} </a></strong>
+            <div class="tags are-medium">
+                {{#tags}}
+                <span class="tag">{{.}}</span>
+                {{/tags}}
+                <div class="content" style="height:50px; overflow:hidden">
+                    {{description}}
+                </div>
+              </div>
+            <small>{{date}}</small>
+          </p>
+    </div>
+</article>
+{{/posts}}
