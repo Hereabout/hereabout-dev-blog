@@ -17,7 +17,7 @@ There are dozens of potential authentication service providers who you can go to
 
 ### Deciding where to start
 
-Back in 2019, I did some experiments with a Purescript/Halogen UI integrating with Auth0. Since I decided to stick with Purescript/Halogen for the UI of [Hereabout](https://hereabout.uk), this seemed like the obvious place to start. Rather than putting myself to any trouble doing some difficult thinking, I could simply copy and paste some code (with a bit of accounting for the inevitable library version updates since 2019) and have a lovely time. What wasn't there to love?
+Back in 2019, I did some experiments with a Purescript/Halogen UI integrating with [https://auth0.com/](Auth0). Since I decided to stick with Purescript/Halogen for the UI of [Hereabout](https://hereabout.uk), this seemed like the obvious place to start. Rather than putting myself to any trouble doing some difficult thinking, I could simply copy and paste some code (with a bit of accounting for the inevitable library version updates since 2019) and have a lovely time. What wasn't there to love?
 
 Well. It turns out that Auth0 and several other authentication providers offer a free plan up to X number of monthly active users (MAUs). This would be absolutely fine if X+1 MAUs cost a nominal fee. Unfortunately, that is not _always_ the case. In the worst possible case, adding 1 MAU might take you from spending $0/month to $1000+/month.
 
