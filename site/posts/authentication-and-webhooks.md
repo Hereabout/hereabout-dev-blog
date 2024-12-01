@@ -57,9 +57,9 @@ In the end, I decided to use Clerk's webhooks so that user information would be 
 
 It turns out that Clerk uses [Svix](https://svix.com/) to send its webhooks. Svix have in turn created a standard called [Standard Webhooks](https://www.standardwebhooks.com/).
 
-Basically, there is a digital signing process to these webhooks so that we can ensure that the webhooks are coming from a trusted source.  They send send three HTTP headers `svix-id`, `svix-timestamp` and `svix-signature`.  You can reproduce `svix-signature` with the `SHA256 HMAC` of `${svix_id}.${svix_timestamp}.${http_request_body}` and your shared `HMAC` secret.
+Basically, there is a digital signing process to these webhooks so that we can ensure that the webhooks are coming from a trusted source.   Libraries are provided for the implementation of the digital signing process but, naturally, there is nothing for Haskell. Before tearing my hair out and going back to square one again, I realise there is a [guide](https://docs.svix.com/receiving/verifying-payloads/how-manual) for verifying the payloads manually.
 
-Libraries are provided for the implementation but, naturally, there is nothing for Haskell. Before tearing my hair out and going back to square one again, I realise there is a [guide](https://docs.svix.com/receiving/verifying-payloads/how-manual) for verifying the payloads manually.
+They send send three HTTP headers `svix-id`, `svix-timestamp` and `svix-signature`.  You can reproduce `svix-signature` with the `SHA256 HMAC` of `${svix_id}.${svix_timestamp}.${http_request_body}` and your shared `HMAC` secret.
 
 ### The Haskell implementation
 
