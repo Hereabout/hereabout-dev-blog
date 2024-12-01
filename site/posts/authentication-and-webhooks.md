@@ -7,6 +7,8 @@ description: The Hereabout journey of auth provider exploration and subsequent w
 image: haskell-auth.webp
 ---
 
+>_This is the first in what is planned to be a series of tech blogs about the development of [Hereabout](https://hereabout.uk). Hereabout is a platform to connect people with events happening in their local community. It is currently a proof of concept operating in my local area. Engagement with end users is handled via the Hereabout site while the underlying event and venue metadata is open sourced on community Github repos allowing anyone to contribute to their community as well as build novel applications with the community metadata aggregated there._
+
 When working on a platform that you intend to contain social components, you are very quickly going to have to consider how to support various types of user interaction: comments, likes, reactions, etc. There are lots of interesting questions to answer in the space of social interaction: What sort of content rating systems promote the right user behaviour? How do you encourage thoughtful, high quality content? How do you prevent harmful content or abuse?
 
 Those are all fascinating questions to consider and certainly ones that I'd like to come back to but before you can even think about prototyping anything in this space, you have to consider the elephant in the room and that is the problem of authentication.
@@ -209,8 +211,8 @@ swhTests = testGroup "Standard Webhook tests"
 
 ### Concluding thoughts
 
-None of this was an entirely smooth experience, the pricing model of authentication providers is both complex and intimidating to smaller projects. Minimal or non-existent Haskell library support for even the most popular providers make building this kind of thing even more difficult.
+None of this was an entirely smooth experience: the pricing model of authentication providers is both complex and intimidating to smaller projects. Minimal or non-existent Haskell library support and lack of language agnostic documentation for even some of the more popular providers makes getting started a bit of minefield.
 
 Auth providers like Supertokens that have a very small set of supported languages (they don't even provide SDKs for Java or .NET) might do well to put a lot of effort into documentation so that the community can provide such SDKs quickly and easily, backed by solid reference material.
 
-In the future, I might go back and release a library on Hackage that provides the above webhook support with a more polished API but, until then, you can consider the above code available under standard 3-Clause BSD licence terms in case it's helpful to anyone building Haskell projects that require syncing data from Clerk.
+In the future, I might go back and release a library on Hackage that provides the above webhook support with a more polished API but, until then, you can consider the above code available under standard 3-Clause BSD licence terms in case it's helpful to anyone building a Haskell project that requires syncing data from Clerk.

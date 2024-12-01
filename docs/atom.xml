@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Hereabout Dev Blog</title>
     <link href="https://hereabout.dev/atom.xml" rel="self" type="application/rss+xml" />
-  <updated>2024-11-30T22:57:50Z</updated>
+  <updated>2024-12-01T03:27:38Z</updated>
   <author>
       <name>Phil Curzon</name>
   </author>
@@ -13,8 +13,20 @@
       <link href="https://hereabout.devposts/authentication-and-webhooks.html"/>
       <id>https://hereabout.devposts/authentication-and-webhooks.html</id>
       <updated>2024-11-29T00:00:00Z</updated>
-      <summary>My first blog post using slick</summary>
-      <content type="html"><![CDATA[<p>When working on a platform that you intend to contain social
+      <summary>The Hereabout journey of auth provider exploration and subsequent
+webhook verification implementation.</summary>
+      <content type="html"><![CDATA[<blockquote>
+<p><em>This is the first in what is planned to be a series of tech blogs
+about the development of <a href="https://hereabout.uk">Hereabout</a>.
+Hereabout is a platform to connect people with events happening in their
+local community. It is currently a proof of concept operating in my
+local area. Engagement with end users is handled via the Hereabout site
+while the underlying event and venue metadata is open sourced on
+community Github repos allowing anyone to contribute to their community
+as well as build novel applications with the community metadata
+aggregated there.</em></p>
+</blockquote>
+<p>When working on a platform that you intend to contain social
 components, you are very quickly going to have to consider how to
 support various types of user interaction: comments, likes, reactions,
 etc. There are lots of interesting questions to answer in the space of
@@ -38,13 +50,13 @@ contacts rather than an evaluation of their individual merits and their
 pricing structures.</p>
 <h3 id="deciding-where-to-start">Deciding where to start</h3>
 <p>Back in 2019, I did some experiments with a Purescript/Halogen UI
-integrating with Auth0. Since I decided to stick with Purescript/Halogen
-for the UI of <a href="https://hereabout.uk">Hereabout</a>, this seemed
-like the obvious place to start. Rather than putting myself to any
-trouble doing some difficult thinking, I could simply copy and paste
-some code (with a bit of accounting for the inevitable library version
-updates since 2019) and have a lovely time. What wasn't there to
-love?</p>
+integrating with <a href="Auth0">https://auth0.com/</a>. Since I decided
+to stick with Purescript/Halogen for the UI of <a
+href="https://hereabout.uk">Hereabout</a>, this seemed like the obvious
+place to start. Rather than putting myself to any trouble doing some
+difficult thinking, I could simply copy and paste some code (with a bit
+of accounting for the inevitable library version updates since 2019) and
+have a lovely time. What wasn't there to love?</p>
 <p>Well. It turns out that Auth0 and several other authentication
 providers offer a free plan up to X number of monthly active users
 (MAUs). This would be absolutely fine if X+1 MAUs cost a nominal fee.
@@ -63,7 +75,7 @@ So, if for no other reason than my psychological health, cliff edges in
 billing are out.</p>
 <h3 id="the-open-source-alternative">The open source alternative</h3>
 <p>My natural reaction to having been burnt by enterprise authentication
-options was to head straight for the open source alternative. Afterall,
+options was to head straight for the open source alternative. After all,
 why risk paying for anything but the cost of hosting the authentication
 platform? So, I started investigating <a
 href="https://www.keycloak.org/">Keycloak</a>.</p>
@@ -90,7 +102,7 @@ out.</p>
 page, they make a big selling point of the fact that there is no 10x
 increase in price when you cross some cliff-edge in user count. There is
 also a self-hosted open source option which would work out to be very
-reasonably priced even if Hereabout ends up being quite succesful.</p>
+reasonably priced even if Hereabout ends up being quite successful.</p>
 <p>Unfortunately, Supertokens offers backend integrations with NodeJS,
 Go and Python. Not at all helpful for my Haskell API. I'm sure it's
 possible to get Supertokens working with my Haskell backend by spinning
@@ -128,16 +140,16 @@ send its webhooks. Svix have in turn created a standard called <a
 href="https://www.standardwebhooks.com/">Standard Webhooks</a>.</p>
 <p>Basically, there is a digital signing process to these webhooks so
 that we can ensure that the webhooks are coming from a trusted source.
-They send send three HTTP headers <code>svix-id</code>,
+Libraries are provided for the implementation of the digital signing
+process but, naturally, there is nothing for Haskell. Before tearing my
+hair out and going back to square one again, I realise there is a <a
+href="https://docs.svix.com/receiving/verifying-payloads/how-manual">guide</a>
+for verifying the payloads manually.</p>
+<p>They send send three HTTP headers <code>svix-id</code>,
 <code>svix-timestamp</code> and <code>svix-signature</code>. You can
 reproduce <code>svix-signature</code> with the <code>SHA256 HMAC</code>
 of <code>${svix_id}.${svix_timestamp}.${http_request_body}</code> and
 your shared <code>HMAC</code> secret.</p>
-<p>Libraries are provided for the implementation but, naturally, there
-is nothing for Haskell. Before tearing my hair out and going back to
-square one again, I realise there is a <a
-href="https://docs.svix.com/receiving/verifying-payloads/how-manual">guide</a>
-for verifying the payloads manually.</p>
 <h3 id="the-haskell-implementation">The Haskell implementation</h3>
 <p>At this point, the job is just to reproduce the example javascript in
 Haskell. Thankfully, this is reasonably straightforward. There is a <a
@@ -282,20 +294,20 @@ class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a 
 <span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="ot">    secret ::</span> <span class="dt">ByteString</span> <span class="ot">=</span> Base64.decodeLenient <span class="op">$</span> TE.encodeUtf8 <span class="st">&quot;8tVXGUy1IpTHVstt9AS5VZL4&quot;</span></span>
 <span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="ot">    secret ::</span> <span class="dt">ByteString</span> <span class="ot">=</span> Base64.decodeLenient <span class="op">$</span> TE.encodeUtf8 <span class="st">&quot;8tVXGUy1IpTHVstt9AS5VZL4&quot;</span></span></code></pre></div>
 <h3 id="concluding-thoughts">Concluding thoughts</h3>
-<p>None of this was an entirely smooth experience, the pricing model of
+<p>None of this was an entirely smooth experience: the pricing model of
 authentication providers is both complex and intimidating to smaller
-projects. Minimal or non-existent Haskell library support for even the
-most popular providers make building this kind of thing even more
-difficult.</p>
+projects. Minimal or non-existent Haskell library support and lack of
+language agnostic documentation for even some of the more popular
+providers makes getting started a bit of minefield.</p>
 <p>Auth providers like Supertokens that have a very small set of
-supported languges (they don't even provide SDKs for Java or .NET) might
-do well to put a lot of effort into documentation so that the community
-can provide such SDKs quickly and easily, backed by solid reference
-material.</p>
+supported languages (they don't even provide SDKs for Java or .NET)
+might do well to put a lot of effort into documentation so that the
+community can provide such SDKs quickly and easily, backed by solid
+reference material.</p>
 <p>In the future, I might go back and release a library on Hackage that
 provides the above webhook support with a more polished API but, until
 then, you can consider the above code available under standard 3-Clause
-BSD licence terms in case it's helpful to anyone building Haskell
-projects that require syncing data from Clerk.</p>]]></content>
+BSD licence terms in case it's helpful to anyone building a Haskell
+project that requires syncing data from Clerk.</p>]]></content>
   </entry>
 </feed>
